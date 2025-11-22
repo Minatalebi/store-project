@@ -5,26 +5,31 @@ import { useProducts } from "../context/ProductsProvider";
 import styles from "./ProductsPage.module.css";
 import Card from "../components/Card";
 import Loader from "../components/Loader";
+import { filterProducts, searchProducts } from "../helper/helper";
 function ProductsPage() {
   const products = useProducts(); //koledata bara dastersi karbar
   const [displayed, setDisplayed] = useState([]);
   const [search, setSearch] = useState("");
   const [query, setQuery] = useState({});
-  const searchHandler = () => {
-    setQuery((query) => ({ ...query, search }));
-  };
+  useEffect(() => {
+    setDisplayed(products);
+  }, [products]);
+  useEffect(() => {
+    let finalProducts = searchProducts(products, query.search);
+    finalProducts = filterProducts(finalProducts, query.category);
+
+    setDisplayed(finalProducts);
+  }, [query]);
+
   const categoryHandler = (event) => {
     const { tagName } = event.target;
     const category = event.target.innerText.toLowerCase();
     if (tagName !== "LI") return;
     setQuery((query) => ({ ...query, category }));
   };
-  useEffect(() => {
-    setDisplayed(products);
-  }, [products]);
-  useEffect(() => {
-    console.log(query);
-  }, [query]);
+  const searchHandler = () => {
+    setQuery((query) => ({ ...query, search }));
+  };
   return (
     <>
       <div>
