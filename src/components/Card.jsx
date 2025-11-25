@@ -11,7 +11,6 @@ function Card({ data }) {
   const quantity = productQuantity(state, id);
   const clickHandler = (type) => {
     dispatch({ type, payload: data });
-    console.log(state);
   };
   return (
     <div className={styles.card}>
@@ -31,8 +30,8 @@ function Card({ data }) {
           {quantity > 1 && (
             <button onClick={() => clickHandler("DECREASE")}>-</button>
           )}
-          {!!quantity && <span>{quantity}</span>} // alamat tajob baes mishe
-          adadbe thruty tabdil she
+          {/* alamat tajob baes mishe adadbe thruty tabdil she */}
+          {!!quantity && <span>{quantity}</span>}
           {quantity === 0 ? (
             <button onClick={() => clickHandler("ADD_ITEM")}>
               <TbShoppingBagCheck />

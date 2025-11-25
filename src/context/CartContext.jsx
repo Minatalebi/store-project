@@ -2,7 +2,7 @@ import { createContext, useContext, useReducer } from "react";
 import { sumProducts } from "../helper/helper";
 const initialState = {
   selectedItems: [],
-  itemsConuter: 0,
+  itemsCounter: 0,
   total: 0,
   checkout: false,
 };

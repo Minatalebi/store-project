@@ -1,6 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { useProducts } from "../context/ProductsProvider";
+import { useProducts } from "../context/ProductsContext";
 import styles from "./ProductsPage.module.css";
 import Card from "../components/Card";
 import Loader from "../components/Loader";

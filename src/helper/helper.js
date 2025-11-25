@@ -39,14 +39,14 @@ const getInitialQuery = (searchParams) => {
   return query;
 };
 const sumProducts = (products) => {
-  const itemCounter = products.reduce(
+  const itemsCounter = products.reduce(
     (counter, product) => counter + product.quantity,
     0
   );
   const total = products
     .reduce((total, product) => total + product.price * product.quantity, 0)
     .toFixed(2);
-  return { itemCounter, total };
+  return { itemsCounter, total };
 };
 //tedad id product ro neshon mide k chandtas , product dare
 const productQuantity = (state, id) => {
