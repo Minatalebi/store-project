@@ -9,7 +9,7 @@ const searchProducts = (products, search) => {
   return searchProducts;
 };
 const filterProducts = (products, category) => {
-  if (!category) return category;
+  if (!category) return products;
   const filteredProducts = products.filter((p) => p.category == category);
   return filteredProducts;
 };

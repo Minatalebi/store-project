@@ -8,54 +8,130 @@ const initialState = {
 };
 const reducer = (state, action) => {
   switch (action.type) {
-    case "ADD_ITEM":
-      if (!state.selectedItems.find((item) => item.id === action.payload.id)) {
-        state.selectedItems.push({ ...action.payload, quantity: 1 });
-      }
+    case "ADD_ITEM": {
+      const exists = state.selectedItems.find(
+        (item) => item.id === action.payload.id
+      );
+
+      const updatedItems = exists
+        ? [...state.selectedItems]
+        : [...state.selectedItems, { ...action.payload, quantity: 1 }];
+
       return {
         ...state,
-        ...sumProducts(state.selectedItems),
+        selectedItems: updatedItems,
+        ...sumProducts(updatedItems),
         checkout: false,
       };
-    case "REMOVE_ITEM":
-      const newSelectedItems = state.selectedItems.filter(
+    }
+
+    case "INCREASE": {
+      const updatedItems = state.selectedItems.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+
+      return {
+        ...state,
+        selectedItems: updatedItems,
+        ...sumProducts(updatedItems),
+      };
+    }
+
+    case "DECREASE": {
+      const updatedItems = state.selectedItems.map((item) =>
+        item.id === action.payload.id
+          ? { ...item, quantity: item.quantity - 1 }
+          : item
+      );
+
+      return {
+        ...state,
+        selectedItems: updatedItems,
+        ...sumProducts(updatedItems),
+      };
+    }
+
+    case "REMOVE_ITEM": {
+      const updatedItems = state.selectedItems.filter(
         (item) => item.id !== action.payload.id
       );
+
       return {
         ...state,
-        selectedItems: [...newSelectedItems],
-        ...sumProducts(newSelectedItems),
+        selectedItems: updatedItems,
+        ...sumProducts(updatedItems),
       };
-    case "INCREASE":
-      const increaseIndex = state.selectedItems.findIndex(
-        (item) => item.id === action.payload.id
-      );
-      state.selectedItems[increaseIndex].quantity++;
-      return {
-        ...state,
-        ...sumProducts(state.selectedItems),
-      };
-    case "DECREASE":
-      const decreaseIndex = state.selectedItems.findIndex(
-        (item) => item.id === action.payload.id
-      );
-      state.selectedItems[decreaseIndex].quantity--;
-      return {
-        ...state,
-        ...sumProducts(state.selectedItems),
-      };
-    case "CHECKOUT":
+    }
+
+    case "CHECKOUT": {
       return {
         selectedItems: [],
-        itemsConuter: 0,
+        itemsCounter: 0,
         total: 0,
-        checkout: false,
+        checkout: true,
       };
+    }
 
     default:
-      throw new Error("Invalid Action!");
+      return state;
   }
 };
+
+// const reducer = (state, action) => {
+//   console.log("REDUCER ACTION:", action);
+//   console.log("STATE BEFORE:", JSON.parse(JSON.stringify(state))); // safe snapshot
+//   switch (action.type) {
+//     case "ADD_ITEM":
+//       if (!state.selectedItems.find((item) => item.id === action.payload.id)) {
+//         state.selectedItems.push({ ...action.payload, quantity: 1 });
+//       }
+//       return {
+//         ...state,
+//         ...sumProducts(state.selectedItems),
+//         checkout: false,
+//       };
+//     case "REMOVE_ITEM":
+//       const newSelectedItems = state.selectedItems.filter(
+//         (item) => item.id !== action.payload.id
+//       );
+//       return {
+//         ...state,
+//         selectedItems: [...newSelectedItems],
+//         ...sumProducts(newSelectedItems),
+//       };
+//     case "INCREASE":
+//       const increaseIndex = state.selectedItems.findIndex(
+//         (item) => item.id === action.payload.id
+//       );
+//       state.selectedItems[increaseIndex].quantity++;
+//       return {
+//         ...state,
+//         ...sumProducts(state.selectedItems),
+//       };
+//     case "DECREASE":
+//       const decreaseIndex = state.selectedItems.findIndex(
+//         (item) => item.id === action.payload.id
+//       );
+//       state.selectedItems[decreaseIndex].quantity--;
+//       return {
+//         ...state,
+//         ...sumProducts(state.selectedItems),
+//       };
+//     case "CHECKOUT":
+//       return {
+//         selectedItems: [],
+//         itemsCounter: 0,
+//         total: 0,
+//         checkout: false,
+//       };
+
+//     default:
+//       throw new Error("Invalid Action!");
+//   }
+// };
+
 const CartContext = createContext();
 
 function CartProvider({ children }) {
