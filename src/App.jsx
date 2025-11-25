@@ -4,21 +4,23 @@ import ProductsProvider from "./context/ProductsProvider";
 import DetailsPage from "./pages/DetailsPage";
 import CheckoutPage from "./pages/CheckoutPage";
 import PageNotFound from "./pages/404";
+import CartProvider from "./context/CartContext";
 
 function App() {
   return (
-    <ProductsProvider>
-      <Routes>
-        <Route path="/" element={<Navigate to="/products" replace />} />
-        //اتوماتیک ریدایرکت به صفحه محصول
-        <Route path="/products" element={<ProductsPage />} />
-        <Route path="/products/:id" element={<DetailsPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
-        <Route path="/*" element={<PageNotFound />} />
-      </Routes>
-    </ProductsProvider>  
+    <CartProvider>
+      <ProductsProvider>
+        <Routes>
+          <Route path="/" element={<Navigate to="/products" replace />} />
+          //اتوماتیک ریدایرکت به صفحه محصول
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:id" element={<DetailsPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/*" element={<PageNotFound />} />
+        </Routes>
+      </ProductsProvider>
+    </CartProvider>
   );
 }
-
 
 export default App;
